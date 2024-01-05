@@ -841,7 +841,7 @@ return $rating;
     function get_support_chat(){
         $this->db->select('s.id, s.from_id,s.to_id,s.message,s.read_status,s.created_at');
         $this->db->from('support s');
-/*        $this->db->join('users u', 'from.id = epr.plan_id');*/
+    /*        $this->db->join('users u', 'from.id = epr.plan_id');*/
         $this->db->where('s.from_id',$this->login_id);
         $this->db->or_where('s.to_id',$this->login_id);
         $this->db->where('s.row_status',1);
@@ -875,6 +875,81 @@ return $rating;
         /*echo $this->db->last_query();die;*/
             
     }
+    
+    // using by themes faqs channge
+    public function get_faqs_info_by_theme_type($theme_type) {
+
+    $query = $this->db->query("SELECT * FROM faqs WHERE theme_type = $theme_type");
+    return $query->result_array();
+    }
+    
+    
+    // testomonial
+    function get_single_testomonial_info($id){
+        return $this->db->get_where('testomonial',array('id'=>$id))->row_array();
+    }
+    function get_testomonial_info(){
+        return $this->db->order_by('id','DESC')->get_where('testomonial',array('row_status'=>1))->result_array();
+    }
+    // using by themes testomonial channge
+    public function get_testomonial_info_by_theme_type($themeType) {
+        $this->db->where('theme_type', $themeType);
+        return $this->db->get('testomonial')->result_array();
+    }
+    // Slides 
+    function get_shopimages_info(){
+        return $this->db->order_by('id','DESC')->get_where('banner',array('row_status !='=>0))->result_array();
+    }
+    public function get_shopimages_theme_type($theme_type) {
+
+    $query = $this->db->query("SELECT * FROM banner WHERE theme_type = $theme_type");
+    return $query->result_array();
+    }
+    
+
+
+    function get_single_aboutus_info($id){
+        return $this->db->get_where('aboutus',array('id'=>$id))->row_array();
+    }
+    function get_aboutus_info(){
+        return $this->db->order_by('id','DESC')->get_where('aboutus',array('row_status'=>1))->result_array();
+    }
+    function insertabout($data)
+    {
+            $this->db->insert('aboutus',$data);
+            return $this->db->insert_id();
+    }
+    
+    public function update_aboutus($theme_type, $data)
+    {
+    $this->db->where('theme_type', $theme_type);
+    $this->db->update('aboutus', $data);
+    }
+    
+       public function get_content_by_theme($themeId)
+    {
+
+        $query = $this->db->get_where('aboutus', array('theme_type' => $themeId));
+        $result = $query->row();
+        return $result ? $result->description : '';
+    }
+    public function get_about_image_by_theme($theme_type) {
+
+    $query = $this->db->query("SELECT * FROM aboutus WHERE theme_type = $theme_type");
+    return $query->result_array();
+    }
+    // teams functions 
+    function get_team_info(){
+        return $this->db->order_by('id','DESC')->get_where('teams',array('row_status'=>1))->result_array();
+    }
+    function get_single_team_info($id){
+        return $this->db->get_where('teams',array('id'=>$id))->row_array();
+    }
+     function get_team_by_theme($themeType) {
+        $this->db->where('theme_type', $themeType);
+        return $this->db->get('teams')->result_array();
+    }
+    
 }
 
 ?>

@@ -15,6 +15,20 @@ if($edit_data!=''){
                                     <div class="card-header">
                                         <form method="post" action="<?=base_url().$form_url;?>" enctype="multipart/form-data" novalidate="novalidate" class="form-horizontal" id="form">
                                             <div class="form-group row">
+                                                
+                                                <label class="col-sm-4 control-label text-sm-right pt-2">Select Theme: </label>
+                                                <div class="col-sm-5">
+                                                    <select name="theme" class="form-control" required>
+                                                    <option>Select theme</option>
+                                                    <option value="1">Food</option>
+                                                    <option value="2">Grocery</option>
+                                                    <option value="3">Ecomercers</option>
+                                                    <option value="4">Real Estate</option>
+                                                </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                
                                                 <label class="col-sm-4 control-label text-sm-right pt-2">Question: </label>
                                                 <div class="col-sm-5">
                                                     <input type="text" name="question" class="form-control" required="" value="<?=$question;?>">

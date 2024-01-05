@@ -272,6 +272,8 @@ if($this->session->userdata('role_id')=='1'){
                                                     View Bookings
                                                 </a>
                                             </li>
+                                          
+
                                             
                                         </ul>
                                     </li>
@@ -356,7 +358,7 @@ if($this->session->userdata('role_id')=='1'){
                                             
                                         </ul>
                                     </li>
-                                    <li class="nav-parent <?php if($page_name=='settings' || $page_name=='faqs' || $page_name=='blog' || $page_name=='flash_image' || $page_title=='Terms & Conditions' || $page_title=='Privacy Policy'){echo 'nav-expanded nav-active';}?>">
+                                    <li class="nav-parent <?php if($page_name=='settings' || $page_name=='faqs' || $page_name=='testomonial' ||  $page_name=='aboutus' ||  $page_name=='addimageitem' || $page_name=='blog' || $page_name=='flash_image' || $page_title=='Terms & Conditions' || $page_title=='Privacy Policy'){echo 'nav-expanded nav-active';}?>">
                                         <a class="nav-link" href="#">
                                             <i class="fas fa-table" aria-hidden="true"></i>
                                             <span>Settings</span>
@@ -377,9 +379,32 @@ if($this->session->userdata('role_id')=='1'){
                                                     FAQ's
                                                 </a>
                                             </li>
+                                            <!-- Extra Added -->
+                                            <li class="<?php if($page_name=='testomonial'){echo 'nav-active';}?>">
+                                                <a class="nav-link" href="<?=base_url('testomonial')?>">
+                                                    Testomonial
+                                                </a>
+                                            </li>
+                                            <li class="<?php if($page_name=='aboutus'){echo 'nav-active';}?>">
+                                                <a class="nav-link" href="<?=base_url('aboutus')?>">
+                                                    About us
+                                                </a>
+                                            </li>
+                                            <li class="<?php if($page_name=='addimageitem'){echo 'nav-active';}?>">
+                                                <a class="nav-link" href="<?=base_url('addimageitem')?>">
+                                                    Banner
+                                                </a>
+                                            </li>
+                                            <li class="<?php if($page_name=='team'){echo 'nav-active';}?>">
+                                                <a class="nav-link" href="<?=base_url('team')?>">
+                                                    Team
+                                                </a>
+                                            </li>
+                                            
+                                            <!-- Extra Added -->
                                             <li class="<?php if($page_name=='blog'){echo 'nav-active';}?>">
                                                 <a class="nav-link" href="<?=base_url('blog')?>">
-                                                    Blog
+                                                    Blog       
                                                 </a>
                                             </li>
                                              <li class="<?php if($page_name=='flash_image'){echo 'nav-active';}?>">

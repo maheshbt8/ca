@@ -161,9 +161,19 @@ $route['subjects'] = 'admin/subjects';
 $route['add_subject'] = 'admin/add_subject';
 $route['viewbookings'] = 'admin/viewbookings';
 $route['add_book'] = 'admin/add_book';
+$route['add_image'] = 'admin/add_image';
+// application/config/routes.php
+
+$route['get_content_by_theme/(:any)'] = 'admin/get_content_by_theme/$1';
+
 $route['addshopitem'] = 'admin/addshopitem';
+$route['addimageitem'] = 'admin/addimageitem';
 $route['settings'] = 'admin/system_settings';
 $route['faqs'] = 'admin/faqs';
+$route['testomonial']='admin/testomonial';
+$route['aboutus']='admin/aboutus';
+$route['team']='admin/team';
+$route['contact']='admin/contact';
 $route['faqs/(:any)'] = 'admin/faqs/$1';
 $route['blog'] = 'admin/blog';
 $route['blog/(:any)'] = 'admin/blog/$1';

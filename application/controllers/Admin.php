@@ -205,7 +205,7 @@ $dt=date('Y-m-d H:i:s',strtotime($dt));*/
             }else{
             $this->session->set_flashdata('qp_error', 'Please select only pdf file.');
             }
-}else{
+            }else{
             $this->session->set_flashdata('qp_error', 'Please select pdf file.');
             }
             }
@@ -290,7 +290,7 @@ if(isset($_FILES['qp']['name']) && $_FILES['qp']['name']!=""){
             }else{
             $this->session->set_flashdata('qp_error', 'Please select only pdf file.');
             }
-}else{
+            }else{
             $this->session->set_flashdata('qp_error', 'Please select pdf file.');
             }*/
             }
@@ -404,7 +404,7 @@ if(isset($_FILES['qp']['name']) && $_FILES['qp']['name']!=""){
             }else{
             $this->session->set_flashdata('notes_error', 'Please select only pdf file.');
             }
-}else{
+            }else{
             $this->session->set_flashdata('notes_error', 'Please select pdf file.');
             }
             }
@@ -450,7 +450,7 @@ if(isset($_FILES['qp']['name']) && $_FILES['qp']['name']!=""){
         }
         $this->load->view('backend/index', $page_data);
     }
-public function sugganswerrequest(){
+    public function sugganswerrequest(){
     if($this->session->userdata('role_id')!=1){
         redirect('error_404');
         }
@@ -545,7 +545,7 @@ public function sugganswerrequest(){
             }else{
             $this->session->set_flashdata('qp_error', 'Please select only pdf file.');
             }
-}else{
+            }else{
             $this->session->set_flashdata('qp_error', 'Please select pdf file.');
             }
             }
@@ -1011,6 +1011,14 @@ public function sugganswerrequest(){
         $page_data['page_name'] = 'addshopitem';
         $this->load->view('backend/index', $page_data);
     }
+    public function addimageitem(){
+        if($this->session->userdata('role_id')!=1){
+        redirect('error_404');
+    }
+        $page_data['page_title'] = 'Add Images Items';
+        $page_data['page_name'] = 'addimageitem';
+        $this->load->view('backend/index', $page_data);
+    }
  public function viewbookings(){
     if($this->session->userdata('role_id')!=1){
         redirect('error_404');
@@ -1078,6 +1086,53 @@ public function sugganswerrequest(){
         
         $this->load->view('backend/index', $page_data);
     }
+    
+    /*Banner*/
+    public function add_image($id='')
+        {
+                if($this->session->userdata('role_id')!=1)
+            {
+                redirect('error_404');
+            }
+            if($id!='')
+            {
+                    $id=base64_decode($id);
+                   
+            }else{
+                    $page_data['edit_data']='';
+                }
+                $page_data['page_title'] = "Banner";
+                $page_data['page_name'] = 'addimage';
+                if($this->input->post()){
+                    $input=$this->input->post();
+                    $input_data=array(
+                        'name'=>$input['name'],
+                        'theme_type'=>$input['theme_type']
+
+                    );
+                   if($id==''){
+                    $res=$this->crud_model->saving_insert_details('banner',$input_data);
+                    if($res>0){
+                        $this->session->set_flashdata('success_message',"Banner Saved Successfully");
+                        move_uploaded_file($_FILES["img"]["tmp_name"], "uploads/banner/". $res.'.jpg');
+
+                    }else{
+                        $this->session->set_flashdata('error_message',"Banner Not Saved");
+                    }
+                }elseif($id!=''){
+                        $where['id']=$id;
+                        $res=$this->crud_model->update_operation($input_data,'banner',$where);
+                    if($res>0){
+                        $this->session->set_flashdata('success_message',"Banner Updated Successfully");
+                    }else{
+                        $this->session->set_flashdata('error_message',"Banner Not Updated");
+                    }
+                    }
+                    redirect('addimageitem');
+                }
+                $this->load->view('backend/index', $page_data);
+        }
+    /*Banner*/
     function e_brochers(){
         if($this->session->userdata('role_id')!=1){
         redirect('error_404');
@@ -1326,7 +1381,7 @@ function system_settings($param1 = '') {
         $page_data['settings'] = $this->db->get('settings')->result_array();
         $this->load->view('backend/index', $page_data);
         }
-              public function courses($id=''){
+        public function courses($id=''){
         if($this->session->userdata('role_id')!=1){
         redirect('error_404');
     }
@@ -1368,45 +1423,222 @@ function system_settings($param1 = '') {
        /*echo $this->crud_model->generateUniqueUserId(1);die;*/
         $this->load->view('backend/index', $page_data);
     }
-        public function faqs($id=''){
-        if($this->session->userdata('role_id')!=1){
-        redirect('error_404');
-    }
-    if($id!=''){
-            $id=base64_decode($id);
-            $page_data['edit_data']=$this->crud_model->get_single_faq_info($id);
+    public function faqs($id='')
+    {
+            if($this->session->userdata('role_id')!=1)
+        {
+            redirect('error_404');
+        }
+        if($id!='')
+        {
+                $id=base64_decode($id);
+                $page_data['edit_data']=$this->crud_model->get_single_faq_info($id);
         }else{
-            $page_data['edit_data']='';
-        }
-        $page_data['page_title'] = "FAQ's";
-        $page_data['page_name'] = 'faqs';
-        $page_data['faqs'] = $this->crud_model->get_faqs_info();
-        if($this->input->post()){
-            $input=$this->input->post();
-            $input_data=array(
-                'question'=>$input['question'],
-                'answer'=>$input['answer']
-            );
-           if($id==''){
-            $res=$this->crud_model->saving_insert_details('faqs',$input_data);
-            if($res>0){
-                $this->session->set_flashdata('success_message',"FAQ's Saved Successfully");
-            }else{
-                $this->session->set_flashdata('error_message',"FAQ's Not Saved");
+                $page_data['edit_data']='';
             }
-        }elseif($id!=''){
-                $where['id']=$id;
-                $res=$this->crud_model->update_operation($input_data,'faqs',$where);
-            if($res>0){
-                $this->session->set_flashdata('success_message',"FAQ's Updated Successfully");
-            }else{
-                $this->session->set_flashdata('error_message',"FAQ's Not Updated");
+            $page_data['page_title'] = "FAQ's";
+            $page_data['page_name'] = 'faqs';
+            $page_data['faqs'] = $this->crud_model->get_faqs_info();
+            if($this->input->post()){
+                $input=$this->input->post();
+                $input_data=array(
+                    'question'=>$input['question'],
+                    'answer'=>$input['answer'],
+                    'theme_type'=>$input['theme']
+
+                );
+               if($id==''){
+                $res=$this->crud_model->saving_insert_details('faqs',$input_data);
+                if($res>0){
+                    $this->session->set_flashdata('success_message',"FAQ's Saved Successfully");
+                }else{
+                    $this->session->set_flashdata('error_message',"FAQ's Not Saved");
+                }
+            }elseif($id!=''){
+                    $where['id']=$id;
+                    $res=$this->crud_model->update_operation($input_data,'faqs',$where);
+                if($res>0){
+                    $this->session->set_flashdata('success_message',"FAQ's Updated Successfully");
+                }else{
+                    $this->session->set_flashdata('error_message',"FAQ's Not Updated");
+                }
+                }
+                redirect('faqs');
             }
-            }
-            redirect('faqs');
-        }
-        $this->load->view('backend/index', $page_data);
+            $this->load->view('backend/index', $page_data);
     }
+
+    /*testomonial*/
+        public function testomonial()
+        {
+            if($this->session->userdata('role_id')!=1)
+            {
+            redirect('error_404');
+            }
+            if($id!=''){
+                $id=base64_decode($id);
+                $page_data['edit_data']=$this->crud_model->get_single_testomonial_info($id);
+            }else{
+                $page_data['edit_data']='';
+            }
+            $page_data['page_title'] = "Testomonial's";
+            $page_data['page_name'] = 'testomonial';
+            $page_data['testomonial'] = $this->crud_model->get_testomonial_info();
+            $this->load->view('backend/index', $page_data);
+            if($this->input->post())
+            {
+                $input=$this->input->post();
+                $input_data=array(
+                    'name'=>$input['name'],
+                    'review'=>$input['client'],
+                    'theme_type'=>$input['theme']
+
+                );
+               if($id==''){
+                    $res=$this->crud_model->saving_insert_details('testomonial',$input_data);
+                    if($res>0){
+                        $this->session->set_flashdata('success_message',"testomonial's Saved Successfully");
+                    }else{
+                    $this->session->set_flashdata('error_message',"testomonial's Not Saved");
+                    }
+                }elseif($id!=''){
+                    $where['id']=$id;
+                    $res=$this->crud_model->update_operation($input_data,'testomonial',$where);
+                    if($res>0){
+                        $this->session->set_flashdata('success_message',"testomonial's Updated Successfully");
+                    }else{
+                        $this->session->set_flashdata('error_message',"testomonial's Not Updated");
+                    }
+                }
+                redirect('testomonial');
+            }
+            
+        }
+    /*testomonial*/
+    
+   
+
+
+    /*Aboutus*/
+            public function aboutus()
+        {
+
+            if ($this->session->userdata('role_id') != 1) {
+                redirect('error_404');
+            }
+
+            if ($this->input->post()) {
+                $input = $this->input->post();
+               
+                $data['theme_type'] = $input['theme_type'];
+                $data['description'] = $input['message'];
+
+                // Check if a record with the same theme_type already exists
+                $existing_record = $this->db->get_where('aboutus', array('theme_type' => $input['theme_type']))->row();
+                /*print_r($existing_record);*/
+                if ($existing_record) {
+                    // If a record exists, update it
+                    $this->crud_model->update_aboutus($input['theme_type'], $data, $file_name);
+                    $this->session->set_flashdata('success_message', "Aboutus Updated Successfully");
+                    $img_id=$existing_record->id;
+                } else {
+                    // If a record doesn't exist, insert a new one
+                    $img_id=$this->crud_model->insertabout($data, $file_name);
+                    $this->session->set_flashdata('success_message', "Aboutus Inserted Successfully");
+
+                }
+                /*echo $img_id;
+                die();*/
+                if ($img_id>0) {
+                    move_uploaded_file($_FILES["img"]["tmp_name"], "uploads/about/". $img_id.'.jpg');
+
+                }
+                redirect($this->session->userdata('last_page'));
+            }
+
+            $page_data['page_title'] = 'About Us';
+            $page_data['page_name'] = 'aboutus';
+
+            $this->load->view('backend/index', $page_data);
+        }
+    /*About us*/
+
+
+
+
+    /*Team*/
+         public function team($id='')
+        {
+                if($this->session->userdata('role_id')!=1)
+            {
+                redirect('error_404');
+            }
+            if($id!='')
+            {
+                    $id=base64_decode($id);
+                    $page_data['edit_data']=$this->crud_model->get_single_team_info($id);
+            }else{
+                    $page_data['edit_data']='';
+                }
+                $page_data['page_title'] = "Team Members";
+                $page_data['page_name'] = 'team';
+                $page_data['team'] = $this->crud_model->get_team_info();
+                if($this->input->post()){
+                    $input=$this->input->post();
+                    $input_data=array(
+                        'name'=>$input['question'],
+                        'review'=>$input['answer'],
+                        'theme_type'=>$input['theme']
+
+                    );
+                   if($id==''){
+                    $res=$this->crud_model->saving_insert_details('teams',$input_data);
+                    if($res>0){
+                        $this->session->set_flashdata('success_message',"team Saved Successfully");
+                        move_uploaded_file($_FILES["img"]["tmp_name"], "uploads/team/". $res.'.jpg');
+
+                    }else{
+                        $this->session->set_flashdata('error_message',"team Not Saved");
+                    }
+                }elseif($id!=''){
+                        $where['id']=$id;
+                        $res=$this->crud_model->update_operation($input_data,'team',$where);
+                    if($res>0){
+                        $this->session->set_flashdata('success_message',"team Updated Successfully");
+                    }else{
+                        $this->session->set_flashdata('error_message',"team Not Updated");
+                    }
+                    }
+                    redirect('team');
+                }
+                $this->load->view('backend/index', $page_data);
+        }
+    /*Team*/
+  
+    /*Contact us*/
+        function contact(){
+            if($this->input->post()){
+                $input=$this->input->post();
+                $inputData=array(
+                    'name'=>$input['name'],
+                    'email'=>$input['email'],
+                    'mobile'=>$input['phone'],
+                    'subject'=>$input['subject'],
+                    'message'=>$input['message']
+                );
+                $res=$this->crud_model->saving_insert_details('feeling_formal',$inputData);
+                if($res>0){
+                    $this->session->set_flashdata('feeling_success','We Will Contact you soon...!');
+                }else{
+                    $this->session->set_flashdata('feeling_error','Not Submited');
+                }
+                /*redirect($this->session->userdata('last_page'));*/
+                redirect(base_url());
+            }
+            
+            
+        }
+    /*Contact Us*/
      public function blog($id=''){
         if($this->session->userdata('role_id')!=1){
         redirect('error_404');
@@ -1476,14 +1708,12 @@ function system_settings($param1 = '') {
             }
             redirect($this->session->userdata('last_page'));
         }
-        
         $page_data['page_title'] = $title;
         $page_data['page_name'] = 'terms';
         $page_data['condition'] = $this->db->get_where('settings', array('setting_type' => $type))->row()->description;
         $page_data['type'] = $type;
         $this->load->view('backend/index', $page_data);
     }
-
     public function add_mcq($value='')
     {
         $page_data['page_title'] = 'Add MCQ';
@@ -1517,6 +1747,13 @@ function system_settings($param1 = '') {
 
         $this->load->view('backend/index', $page_data);   
     }
+    /*Aboutus dynamic*/
     
+    public function get_content_by_theme($themeId)
+    {
+        $content = $this->crud_model->get_content_by_theme($themeId);
+        header('Content-Type: text/plain');
+        echo $content;
+    }
 }
 ?>

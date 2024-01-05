@@ -9,12 +9,12 @@ switch ($_SERVER['SERVER_NAME']){
     case 'localhost':
 		$user="root";
 		$password="";
-		$database="ca";
+		$database="cac";
         break;
     case 'testing':
         $user="root";
 		$password="";
-		$database="ca";
+		$database="cac";
         break;
     default:
         $user="u141583395_caexams";
